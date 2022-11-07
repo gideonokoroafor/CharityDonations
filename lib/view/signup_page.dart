@@ -86,10 +86,6 @@ class _SignUpPageState extends State<SignUpPage> {
           const SizedBox(
             height: 10,
           ),
-          _signUpAsOrgButton(context),
-          const SizedBox(
-            height: 10,
-          ),
           _returnToSignInPage(context)
         ],
       )),
