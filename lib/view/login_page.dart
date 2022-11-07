@@ -35,9 +35,6 @@ class _LoginPageState extends State<LoginPage> {
             );
           });
     }
-    // await FirebaseAuth.instance.signInWithEmailAndPassword(
-    //     email: _emailController.text.trim(),
-    //     password: _passwordController.text.trim());
   }
 
   // dispose of controllers when not in use
@@ -51,27 +48,22 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.grey[300],//Colors.grey[300],
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [Colors.amberAccent, Colors.redAccent])),
-        child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
+      backgroundColor:
+          const Color.fromARGB(174, 224, 224, 224), //Colors.grey[300],
+      body: SingleChildScrollView(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // _backgroundImage(),
-              const SizedBox(
-                height: 50,
-              ),
-              const Center(
-                child: Image(
-                  image: AssetImage('assets/amal_logo1.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
+              _backgroundImage(),
+              // const SizedBox(
+              //   height: 50,
+              // ),
+              // const Center(
+              //   child: Image(
+              //     image: AssetImage('assets/amal_logo1.png'),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
               // Text(
               //   'Welcome,',
               //   style: GoogleFonts.bebasNeue(
@@ -111,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               _inputPassword(),
               const SizedBox(
-                height: 10,
+                height: 20,
               ),
               _logInButton(context),
               const SizedBox(
@@ -119,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               _signUpButton(context),
               const SizedBox(
-                height: 10,
+                height: 15,
               ),
               _signUpOrgButton(context),
               const SizedBox(
@@ -139,10 +131,10 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
+              borderSide: const BorderSide(color: Colors.white)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.blueGrey)),
+              borderSide: const BorderSide(color: Colors.blueGrey)),
           hintText: 'Enter Email',
           prefixIcon: const Icon(
             Icons.email,
@@ -164,10 +156,10 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
+              borderSide: const BorderSide(color: Colors.white)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.blueGrey)),
+              borderSide: BorderSide(color: Colors.blueGrey.withOpacity(0.8))),
           hintText: 'Enter Password',
           prefixIcon: const Icon(
             Icons.lock_rounded,
@@ -224,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
   _signUpOrgButton(context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       const Text(
-        'NPO? ',
+        'Signing up as an organization? ',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       GestureDetector(
@@ -251,13 +243,13 @@ class _LoginPageState extends State<LoginPage> {
       child: Container(
         height: size.height * .53, // .53
         width: size.width,
-        color: Colors.deepPurple.withOpacity(0.8), //Colors.blueGrey.withOpacity(0.8),
+        color: Colors.blueGrey.withOpacity(0.8),
         child: const Padding(
           padding: EdgeInsets.symmetric(
               horizontal: appPadding / 2, vertical: appPadding * 3),
           child: Center(
             child: Image(
-              image: AssetImage('assets/amal_logo1.png'),
+              image: AssetImage('assets/amal_white_logo5.png'),
               fit: BoxFit.cover,
             ),
           ),
