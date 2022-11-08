@@ -1,8 +1,7 @@
 import 'package:charity_donations/authentication/forgot_password.dart';
+import 'package:charity_donations/utils/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../utils/curve_clippers.dart';
 import '../utils/mybuttons.dart';
@@ -20,13 +19,22 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  // ignore: unused_field
+  late bool _isLoading = false;
+
   // sign in with email and password
   Future signIn() async {
     try {
+      setState(() {
+        _isLoading = true; // added loading
+      });
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        _isLoading = false; // added loading
+      });
       showDialog(
           context: context,
           builder: (context) {
@@ -47,80 +55,62 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor:
-          const Color.fromARGB(174, 224, 224, 224), //Colors.grey[300],
-      body: SingleChildScrollView(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _backgroundImage(),
-              // const SizedBox(
-              //   height: 50,
-              // ),
-              // const Center(
-              //   child: Image(
-              //     image: AssetImage('assets/amal_logo1.png'),
-              //     fit: BoxFit.cover,
-              //   ),
-              // ),
-              // Text(
-              //   'Welcome,',
-              //   style: GoogleFonts.bebasNeue(
-              //       fontSize: 52, color: Colors.black.withOpacity(0.8)),
-              //   // style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-              //   // textAlign: TextAlign.left,
-              // ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  'Welcome,',
-                  style: GoogleFonts.bebasNeue(
-                      fontSize: 52, color: Colors.black.withOpacity(0.8)),
-                  // style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              const SizedBox(
-                height: 0,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  'Sign in to continue!',
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blueGrey.shade400),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              _inputEmail(),
-              const SizedBox(
-                height: 10,
-              ),
-              _inputPassword(),
-              const SizedBox(
-                height: 20,
-              ),
-              _logInButton(context),
-              const SizedBox(
-                height: 20,
-              ),
-              _signUpButton(context),
-              const SizedBox(
-                height: 15,
-              ),
-              _signUpOrgButton(context),
-              const SizedBox(
-                height: 0,
-              ),
-              _forgotPassword(),
-            ]),
-      ),
-    );
+    return _isLoading
+        ? const Loading()
+        : Scaffold(
+            backgroundColor: Colors.grey[300],
+            body: SingleChildScrollView(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _backgroundImage(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        'Welcome,',
+                        style: GoogleFonts.bebasNeue(
+                            fontSize: 52, color: Colors.black.withOpacity(0.8)),
+                        // style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        'Sign in to continue!',
+                        style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueGrey.shade400),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _inputEmail(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _inputPassword(),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    _logInButton(context), // login button
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    _signUpButton(context), // signup button
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    _signUpOrgButton(context), // organization
+                    _forgotPassword(),
+                  ]),
+            ),
+          );
   }
 
   _inputEmail() {
@@ -178,12 +168,6 @@ class _LoginPageState extends State<LoginPage> {
       child: MyButton(
           label: 'Sign In',
           onTap: signIn,
-          // () {
-          //   Navigator.of(context)
-          //       .push(MaterialPageRoute(builder: (BuildContext context) {
-          //     return const SignInAuth();
-          //   }));
-          // },
           height: 50,
           width: 400,
           color: Colors.blueGrey.withOpacity(0.8)),
@@ -259,20 +243,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _forgotPassword() {
-    return Container(
-        margin: const EdgeInsets.only(left: 10, right: 10),
-        child: Center(
-          child: TextButton(
-            child: const Text(
-              "Forgot Password?",
-            ),
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (BuildContext context) {
-                return const ForgotPasswordPage();
-              }));
-            },
-          ),
-        ));
+    return Center(
+      child: TextButton(
+        child: const Text(
+          "Forgot Password?",
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return const ForgotPasswordPage();
+          }));
+        },
+      ),
+    );
   }
 }
