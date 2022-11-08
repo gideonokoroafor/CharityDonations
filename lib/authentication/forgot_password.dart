@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:charity_donations/authentication/auth_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +24,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     try {
       await FirebaseAuth.instance
           .sendPasswordResetEmail(email: _emailController.text.trim());
-      final snackBar = SnackBar(
+      const snackBar = SnackBar(
         backgroundColor: Colors.blueGrey,
         elevation: 10,
-        content: const Text(
+        content: Text(
           'Password reset link sent! Check your email',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal),
         ),
@@ -59,7 +61,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.lock_rounded,
               size: 100,
               color: Colors.blueGrey,
@@ -86,7 +88,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
             _resetLoginButton(context),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             _returntoLogin()
           ],
@@ -103,12 +105,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.white)),
+              borderSide: const BorderSide(color: Colors.white)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(color: Colors.blueGrey)),
+              borderSide: const BorderSide(color: Colors.blueGrey)),
           hintText: 'Enter Email',
-          prefixIcon: Icon(
+          prefixIcon: const Icon(
             Icons.email,
             color: Colors.blueGrey,
           ),
@@ -145,7 +147,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               Navigator.pushAndRemoveUntil<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => AuthPage(),
+                  builder: (BuildContext context) => const AuthPage(),
                 ),
                 (route) =>
                     false, //if you want to disable back feature set to false
