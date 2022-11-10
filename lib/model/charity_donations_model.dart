@@ -32,7 +32,7 @@ class CharityDonationsModel {
   // Add organizations details to the database and store their userID
   Future dbAddOrgDetails(
       String firstname, String lastName, String email, String address) async {
-        await FirebaseFirestore.instance.collection('users').add({
+        await FirebaseFirestore.instance.collection('organizations').add({
           'first name': firstname,
           'last name': lastName,
           'email': email,
