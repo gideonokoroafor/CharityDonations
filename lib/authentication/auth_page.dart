@@ -1,5 +1,5 @@
-import 'package:charity_donations/view/login_page.dart';
-import 'package:charity_donations/view/signup_page.dart';
+import 'package:charity_donations/users_view/login_page.dart';
+import 'package:charity_donations/users_view/signup_page.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AuthPage extends StatefulWidget {
