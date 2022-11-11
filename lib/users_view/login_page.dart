@@ -1,4 +1,5 @@
 import 'package:charity_donations/authentication/forgot_password.dart';
+import 'package:charity_donations/organization_view/OrgSignup.dart';
 import 'package:charity_donations/utils/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -204,13 +205,12 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       GestureDetector(
-        onTap: widget.showSignUpPage,
-        // () {
-        //   Navigator.of(context)
-        //       .push(MaterialPageRoute(builder: (BuildContext context) {
-        //     return const SignUpPage();
-        //   }));
-        // },
+        onTap: () {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return const OrgSignUp();
+          }));
+        },
         child: const Text(
           'Register now',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
