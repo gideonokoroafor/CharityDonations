@@ -12,8 +12,6 @@ class SignUpPage extends StatefulWidget {
   final VoidCallback showLoginPage;
   const SignUpPage({Key? key, required this.showLoginPage}) : super(key: key);
 
-  /* (TODO: collect phone number with country code) */
-
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
@@ -41,14 +39,24 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = true;
         }); // added a loading widget
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
-        model.dbAddUserDetails(
-            _firstnameController.text.trim(),
-            _lastnameController.text.trim(),
-            _emailController.text.trim(),
-            _addressController.text.trim());
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim())
+            .then((value) {
+              model.dbAddUserDetails(
+                _firstnameController.text.trim(),
+                _lastnameController.text.trim(),
+                _emailController.text.trim(),
+                value.user!.uid,
+          );
+        });
+        // model.dbAddUserDetails(
+        //     _firstnameController.text.trim(),
+        //     _lastnameController.text.trim(),
+        //     _emailController.text.trim(),
+        //     // _addressController.text.trim()
+        //   );
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -82,63 +90,61 @@ class _SignUpPageState extends State<SignUpPage> {
         ? const Loading()
         : Scaffold(
             backgroundColor: Colors.grey[300],
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // _backgroundImage(),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Image(
-                    image: AssetImage('assets/amal_bluegrey_logo1.png'),
-                    fit: BoxFit.cover,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10.0,
+            body: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Image(
+                      image: AssetImage('assets/amal_bluegrey_logo1.png'),
+                      fit: BoxFit.cover,
                     ),
-                    child: Text(
-                      'Create Account',
-                      style: GoogleFonts.bebasNeue(
-                          fontSize: 45, color: Colors.blueGrey.shade400),
-                      // style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                          ),
+                          child: Text(
+                            'Create Account',
+                            style: GoogleFonts.bebasNeue(
+                                fontSize: 45, color: Colors.blueGrey.shade400),
+                            // style: TextStyle(fontSize: 36, fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _inputFirstName(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _inputLastName(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _inputEmail(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _inputPassword(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _confirmPassword(),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _signUpButton(context),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        _returnToSignInPage(context),
+                      ],
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _inputFirstName(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _inputLastName(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _inputEmail(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _inputAddress(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _inputPassword(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _confirmPassword(),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _signUpButton(context),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _returnToSignInPage(context),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -225,19 +231,11 @@ class _SignUpPageState extends State<SignUpPage> {
   _returnToSignInPage(context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       const Text(
-        'Already have an account? ',
+        'Already a member? ',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       GestureDetector(
         onTap: widget.showLoginPage,
-        // () {
-        //   Navigator.of(context)
-        //       .push(MaterialPageRoute(builder: (BuildContext context) {
-        //     return const LoginPage(
-        //       showSignUpPage: SignUpPage(),
-        //     );
-        //   }));
-        // },
         child: const Text(
           'Log in',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
@@ -253,7 +251,7 @@ class _SignUpPageState extends State<SignUpPage> {
           label: 'Sign Up',
           onTap: signUp,
           height: 50,
-          width: 400,
+          width: 450,
           color: Colors.blueGrey.withOpacity(0.8)),
     );
   }
@@ -271,6 +269,8 @@ class _SignUpPageState extends State<SignUpPage> {
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.blueGrey)),
           hintText: 'Enter Firstname',
+          // helperText: "Name can't be empty",
+          // labelText: 'First name',
           prefixIcon: const Icon(
             Icons.person,
             color: Colors.blueGrey,
@@ -297,30 +297,6 @@ class _SignUpPageState extends State<SignUpPage> {
           hintText: 'Enter Lastname',
           prefixIcon: const Icon(
             Icons.person,
-            color: Colors.blueGrey,
-          ),
-          fillColor: Colors.grey[200],
-          filled: true,
-        ),
-      ),
-    );
-  }
-
-  _inputAddress() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: TextField(
-        controller: _addressController,
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.white)),
-          focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.blueGrey)),
-          hintText: 'Enter Address',
-          prefixIcon: const Icon(
-            Icons.home,
             color: Colors.blueGrey,
           ),
           fillColor: Colors.grey[200],
