@@ -39,34 +39,6 @@ class _HomePageState extends State<HomePage> {
     getData();
   }
 
-  // final Stream<QuerySnapshot> _usersStream =
-  //     FirebaseFirestore.instance.collection('users').snapshots();
-
-  // Future<void> getUsers() async {
-  //   DocumentSnapshot data = await retrieveData();
-  //   print(data.data().toString());
-  // }
-
-  // Future<DocumentSnapshot> retrieveData() async {
-  //   return dbReference.doc(user!.uid).get();
-  // }
-
-  // var currUser = FirebaseFirestore.instance.collection("users").doc(user!.uid);
-
-  // void getData() async {
-  //   var currUser = await FirebaseFirestore.instance
-  //       .collection("users")
-  //       .doc(user!.uid)
-  //       .get();
-  //   setState(() {
-  //     print('Hereeee');
-  //     firstname = currUser['firstname'];
-  //     lastname = currUser['lastname'].toString();
-  //     email = currUser['email'].toString();
-  //     print(firstname);
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,64 +64,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // body: Center(
-      //     child: StreamBuilder<QuerySnapshot>(
-      //   stream: _usersStream,
-      //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-      //     if (snapshot.hasError) return const Text('Something went wrong');
-      //     // if (snapshot.connectionState == ConnectionState.waiting) {
-      //     //   print('Hereeee');
-      //     //   return const Loading();
-      //     // }
-      //     if (snapshot.connectionState == ConnectionState.done) {
-      //       // Map<String, dynamic> data = snapshot.data! as Map<String, dynamic>;
-      //       // return Text("Full Name: ${data['firstname']} ${data['lastname']}");
-      //       return Text(getUsers() as String);
-      //     }
-      //     // return ListView(
-      //     //   children: snapshot.data!.docs.map((DocumentSnapshot doc) {
-      //     //     Map<String, dynamic> data =
-      //     //         doc.data! as Map<String, dynamic>;
-      //     //     return ListTile(
-      //     //       title: Text(data['firstname']),
-      //     //       subtitle: Text(data['lastname']),
-      //     //     );
-      //     //   }).toList().cast(),
-      //     // );
-      //     // else if (snapshot.connectionState == ConnectionState.done) {
-      //     //   Map<String, dynamic> data =
-      //     //       snapshot.data!.data() as Map<String, dynamic>;
-      //     //   return Text(
-      //     //       "Full Name: ${data['fullname']} ${data['lastname']}");
-      //     // }
-      //     else {
-      //       return const Loading();
-      //     }
-      //   },
-      // )),
     );
   }
 }
-
-// Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             Text('Welcome $firstname'),
-//             MaterialButton(
-//               onPressed: () {
-//                 FirebaseAuth.instance.signOut();
-//               },
-//               color: Colors.blueGrey,
-//               child: const Text('Sign Out'),
-//             ),
-//             MaterialButton(
-//               onPressed: () {
-//                 print('Hereeee');
-//                 print(user!.displayName);
-//                 print(user!.uid);
-//               },
-//               color: Colors.blueGrey,
-//               child: const Text('Click me'),
-//             )
-//           ],
-//         ),
