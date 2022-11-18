@@ -12,8 +12,6 @@ class SignUpPage extends StatefulWidget {
   final VoidCallback showLoginPage;
   const SignUpPage({Key? key, required this.showLoginPage}) : super(key: key);
 
-  /* (TODO: collect phone number with country code) */
-
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
@@ -41,15 +39,24 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           _isLoading = true;
         }); // added a loading widget
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
-        model.dbAddUserDetails(
-            _firstnameController.text.trim(),
-            _lastnameController.text.trim(),
-            _emailController.text.trim(),
-            // _addressController.text.trim()
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text.trim(),
+                password: _passwordController.text.trim())
+            .then((value) {
+              model.dbAddUserDetails(
+                _firstnameController.text.trim(),
+                _lastnameController.text.trim(),
+                _emailController.text.trim(),
+                value.user!.uid,
           );
+        });
+        // model.dbAddUserDetails(
+        //     _firstnameController.text.trim(),
+        //     _lastnameController.text.trim(),
+        //     _emailController.text.trim(),
+        //     // _addressController.text.trim()
+        //   );
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -224,19 +231,11 @@ class _SignUpPageState extends State<SignUpPage> {
   _returnToSignInPage(context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       const Text(
-        'Already have an account? ',
+        'Already a member? ',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       GestureDetector(
         onTap: widget.showLoginPage,
-        // () {
-        //   Navigator.of(context)
-        //       .push(MaterialPageRoute(builder: (BuildContext context) {
-        //     return const LoginPage(
-        //       showSignUpPage: SignUpPage(),
-        //     );
-        //   }));
-        // },
         child: const Text(
           'Log in',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
@@ -270,6 +269,8 @@ class _SignUpPageState extends State<SignUpPage> {
               borderRadius: BorderRadius.circular(10),
               borderSide: const BorderSide(color: Colors.blueGrey)),
           hintText: 'Enter Firstname',
+          // helperText: "Name can't be empty",
+          // labelText: 'First name',
           prefixIcon: const Icon(
             Icons.person,
             color: Colors.blueGrey,
@@ -304,5 +305,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
 }
