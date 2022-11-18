@@ -15,8 +15,8 @@ class SignInAuth extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // return const HomePage();
-            return const BuildProfile();
+            return const HomePage();
+            // return const BuildProfile();
           } else {
             return const AuthPage();
           }
