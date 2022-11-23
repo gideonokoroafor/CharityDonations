@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as Path;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:uuid/uuid.dart';
 
 class CharityDonationsModel {
   final firestoreInstance = FirebaseFirestore.instance;
@@ -10,6 +14,8 @@ class CharityDonationsModel {
   late final _uid;
   final auth = FirebaseAuth.instance;
   late User currentUser;
+  late firebase_storage.Reference ref;
+  late CollectionReference imgRef;
   getCurrentUser() {
     currentUser = auth.currentUser!;
     if (auth.currentUser != null) {
@@ -39,9 +45,29 @@ class CharityDonationsModel {
     });
   }
 
-  // Future<String> getFullname() async {
-  //   return users.get().then((DataSnapshot snapshot) {
-  //     final String fullName = snapshot.v
-  //   })
-  // }
+  Future dbUploadImgWithDetails(
+    File img,
+    String docId,
+    String category,
+    String fullName,
+    String itemName,
+    String itemDescription,
+  ) async {
+    ref = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('$category/${Path.basename(img.path)}')
+        .child('$category/${Path.basename(img.path)}');
+    await ref.putFile(img).whenComplete(() async {
+      await ref.getDownloadURL().then((value) {
+        FirebaseFirestore.instance.collection(category).doc(DateTime.now().toString()).set({
+          'fullname': fullName,
+          'itemName': itemName,
+          'category': category,
+          'description': itemDescription,
+          'url': value,
+          'userId': docId
+        });
+      });
+    });
+  }
 }
