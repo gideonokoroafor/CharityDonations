@@ -1,7 +1,5 @@
 // ignore_for_file: unused_field, dead_code, unused_label
-import 'package:charity_donations/utils/loading.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -19,24 +17,30 @@ class _HomePageState extends State<HomePage> {
   String _fullname = "";
   String _email = "";
   String _uid = "";
-  // final DocumentSnapshot dbReference = FirebaseFirestore.instance.collection('users');
 
   void getData() async {
     _uid = user!.uid;
     final DocumentSnapshot dbReference =
         await FirebaseFirestore.instance.collection('users').doc(_uid).get();
+    // if (mounted) {
     setState(() {
       _firstname = dbReference.get('firstname');
       _lastname = dbReference.get('lastname');
       _fullname = "$_firstname $_lastname";
       _email = dbReference.get('email');
     });
+    print(_fullname);
   }
 
   @override
   void initState() {
     super.initState();
     getData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -53,7 +57,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Welcome! $_fullname'),
-            Text('Welcome! $_email'),
+            Text(_email),
             MaterialButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
