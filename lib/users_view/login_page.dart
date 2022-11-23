@@ -22,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  // ignore: unused_field
   late bool _isLoading = false;
 
   // sign in with email and password
@@ -109,8 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       height: 15,
                     ),
-                    _signUpOrgButton(context),
-                    _devButton(), // organization
+                    _signUpOrgButton(context), // organization
                     _forgotPassword(),
                   ]),
             ),
@@ -255,22 +253,6 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return const ForgotPasswordPage();
-          }));
-        },
-      ),
-    );
-  }
-
-  _devButton() {
-    return Center(
-      child: TextButton(
-        child: const Text(
-          "Developer button",
-        ),
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return const HomePage();
           }));
         },
       ),
