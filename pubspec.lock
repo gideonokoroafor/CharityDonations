@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: d2901ab922bc04fb1592998c10e78871b9d09419c6d9075967b4cfedb63a2e2d
+      sha256: e1d4810cd162d842ab1578239a4279a2402d3c1731c1345286df027c830890f8
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.8"
+    version: "1.0.9"
   async:
     dependency: transitive
     description:
@@ -53,18 +53,18 @@ packages:
     dependency: transitive
     description:
       name: cloud_firestore_platform_interface
-      sha256: b6d5b15383fc9b4bb6d6f0015cffb320b00d6e7bfb56046cfc93017a77aa3cea
+      sha256: ea3d1d12d72ecaa58909d93e50aca53263d3bf06b904a7f0f1dcd5798941c09b
       url: "https://pub.dev"
     source: hosted
-    version: "5.8.5"
+    version: "5.9.0"
   cloud_firestore_web:
     dependency: transitive
     description:
       name: cloud_firestore_web
-      sha256: "36ef9d3062538358147364da7be4d2c5948217c64893f7fa351d6641f703e0b1"
+      sha256: "3c9a77380e6a053129c2cb6dbe8ef1b708f4350ce0dad220d2c05cd68a2d467f"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.5"
+    version: "3.1.0"
   collection:
     dependency: transitive
     description:
@@ -97,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  dropdown_button2:
+    dependency: "direct main"
+    description:
+      name: dropdown_button2
+      sha256: c2c822bc6334ecdb54e5eb79cc02041fb7a208c191ccd87538e3706c2f31a1b6
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.9.0"
   fake_async:
     dependency: transitive
     description:
@@ -169,6 +177,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  firebase_storage:
+    dependency: "direct main"
+    description:
+      name: firebase_storage
+      sha256: ba654c8b4bbf21e253324769742cfffa66cef9fdce40fc482a677dbe6578c61a
+      url: "https://pub.dev"
+    source: hosted
+    version: "11.0.6"
+  firebase_storage_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_storage_platform_interface
+      sha256: "9dfe3cee7faf9253e1bc2d610644de5c4bc4aa092a7d7ec7e6764f4d453d8149"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.24"
+  firebase_storage_web:
+    dependency: transitive
+    description:
+      name: firebase_storage_web
+      sha256: dc095feb0d8cfc5154cf2710ad60ead8a7cafb5ec4f2b20f84c66442e87490f2
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.16"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -329,7 +361,7 @@ packages:
     source: hosted
     version: "1.8.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: db9d4f58c908a4ba5953fcee2ae317c94889433e5024c27ce74a37f94267945b
@@ -477,6 +509,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.15"
+  transparent_image:
+    dependency: "direct main"
+    description:
+      name: transparent_image
+      sha256: e566a616922a781489f4d91cc939b1b3203b6e4a093317805f2f82f0bb0f8dec
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   typed_data:
     dependency: transitive
     description:
@@ -485,6 +525,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.1"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:
