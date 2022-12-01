@@ -37,7 +37,7 @@ class _FurnituresState extends State<Furnitures> {
           stream: FirebaseFirestore.instance
               .collection('donations')
               .where('category', isEqualTo: 'FURNITURES')
-              .where('userId', isNotEqualTo: user!.uid)
+              // .where('userId', isNotEqualTo: user!.uid)
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
