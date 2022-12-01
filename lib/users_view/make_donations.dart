@@ -6,10 +6,13 @@ import 'package:charity_donations/utils/landing_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/foundation.dart';
+import 'package:charity_donations/utils/constants.dart' as Constants;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:uuid/uuid.dart';
 
 import '../utils/myButtons.dart';
 
@@ -30,24 +33,25 @@ class _MakeDonationsState extends State<MakeDonations> {
   String _uid = "";
 
   double val = 0;
+  var uuid = const Uuid();
   bool _isUploading = false;
   late CollectionReference imgRef;
-  late firebase_storage.Reference ref;  // remove
+  late firebase_storage.Reference ref; // remove
   User? user = FirebaseAuth.instance.currentUser!;
 
   CharityDonationsModel model = CharityDonationsModel();
 
   String? selectedValue;
-  final List<String> items = [
-    'CLOTHING',
-    'BAGS AND SHOES',
-    'KITCHENWARE',
-    'FURNITURES',
-    'SPORTING GOODS',
-    'BOOKS',
-    'TOYS',
-    'ELECTRONICS'
-  ];
+  // final List<String> items = [
+  //   'CLOTHING',
+  //   'BAGS AND SHOES',
+  //   'KITCHENWARE',
+  //   'FURNITURES',
+  //   'SPORTING GOODS',
+  //   'BOOKS',
+  //   'TOYS',
+  //   'ELECTRONICS'
+  // ];
 
   final List<File> _image = [];
   final picker = ImagePicker();
@@ -99,7 +103,7 @@ class _MakeDonationsState extends State<MakeDonations> {
                                   child: IconButton(
                                     icon: const Icon(Icons.add),
                                     onPressed: () {
-                                      chooseImage();
+                                      !_isUploading ? chooseImage() : null;
                                     },
                                   ),
                                 )
@@ -115,7 +119,8 @@ class _MakeDonationsState extends State<MakeDonations> {
                         ? Center(
                             child: Column(
                             mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text(
                                 'uploading...',
@@ -151,27 +156,25 @@ class _MakeDonationsState extends State<MakeDonations> {
   // function that allows you to pick images from gallery
   chooseImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    File file = File(pickedFile!.path);
-    setState(() {
-      _image.add(file);
-    });
+    try {
+      File? file = File(pickedFile!.path);
+      setState(() {
+        _image.add(file);
+      });
+    } catch (error) {
+      const Text('This category is empty');
+    }
+    // File? file = File(pickedFile!.path);
+    // setState(() {
+    //   _image.add(file);
+    // });
     // if (file == null) retrieveLostData();
   }
 
-  // Future uploadFile() async {
-  //   int i = 1;
-  //   for (var img in _image) {
-  //     setState(() {
-  //       val = i / _image.length;
-  //     });
-  //     model.dbUploadImgWithDetails(img, _uid, selectedValue!, _fullname,
-  //         _nameController.text, _descriptionController.text);
-  //     i++;
-  //   }
-  // }
-
   Future uploadFile() async {
+    List<String> imageUrlList = [];
     int i = 1;
+    var v1 = uuid.v1();
     for (var img in _image) {
       setState(() {
         val = i / _image.length;
@@ -181,11 +184,13 @@ class _MakeDonationsState extends State<MakeDonations> {
           .child('$selectedValue/${Path.basename(img.path)}');
       await ref.putFile(img).whenComplete(() async {
         await ref.getDownloadURL().then((value) {
-          imgRef.add({'url': value});
+          imageUrlList.add(value);
           i++;
         });
       });
     }
+    model.dbDonationDetails(_fullname, _nameController.text, _uid,
+        selectedValue!, _descriptionController.text, imageUrlList, v1);
   }
 
   _inputItemTitle() {
@@ -202,6 +207,9 @@ class _MakeDonationsState extends State<MakeDonations> {
   }
 
   _uploadButton(context) {
+    if (kDebugMode) {
+      print("Before upload is clicked $_isUploading");
+    }
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: MyButton(
@@ -212,6 +220,9 @@ class _MakeDonationsState extends State<MakeDonations> {
                 selectedValue != null) {
               setState(() {
                 _isUploading = true;
+                if (kDebugMode) {
+                  print("After upload is clicked $_isUploading");
+                }
               });
               uploadFile().whenComplete(() {
                 Navigator.pushReplacement(
@@ -233,20 +244,6 @@ class _MakeDonationsState extends State<MakeDonations> {
                     );
                   });
             }
-            // setState(() {
-            //   _isUploading = true;
-            // });
-            // uploadFile().whenComplete(() {
-            //   Navigator.pushReplacement(
-            //     context,
-            //     PageRouteBuilder(
-            //       pageBuilder: (context, animation1, animation2) =>
-            //           const LandingPage(),
-            //       transitionDuration: Duration.zero,
-            //       reverseTransitionDuration: Duration.zero,
-            //     ),
-            //   );
-            // });
           },
           height: 50,
           width: 450,
@@ -268,7 +265,19 @@ class _MakeDonationsState extends State<MakeDonations> {
     );
   }
 
-  // drop down menu for categories
+  // _categoriesMenu(BuildContext context) {
+  //   return MyDropDownMenu(
+  //       items: Constants.items,
+  //       buttonHeight: 55,
+  //       buttonWidth: 450,
+  //       dropDownHeight: 200,
+  //       dropDownWidth: 200,
+  //       dropdownDirection: DropdownDirection.left,
+  //       label: 'Choose category',
+  //     );
+  // }
+
+  //drop down menu for categories
   _categoriesMenu(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton2(
@@ -288,7 +297,7 @@ class _MakeDonationsState extends State<MakeDonations> {
             ),
           ],
         ),
-        items: items
+        items: Constants.items
             .map((item) => DropdownMenuItem<String>(
                   value: item,
                   child: Text(
@@ -344,35 +353,3 @@ class _MakeDonationsState extends State<MakeDonations> {
     );
   }
 }
-
-
-
-// const Center(
-//           child: Text(
-//         'Make Donation',
-//         style: TextStyle(fontSize: 40),
-//       )),
-
-
-// Future<void> retrieveLostData() async {
-//   final LostData response = await picker.getLostData();
-//   if (response.isEmpty) {
-//     return;
-//   }
-//   if (response.file != null) {
-//     setState(() {
-//       _image.add(response.file?.path as File);
-//     });
-//   } else {
-//     print(response.file);
-//   }
-// }
-
-// Align(
-//   alignment: Alignment.topRight,
-//   child: IconButton(
-//     icon: const Icon(Icons.close),
-//     color: Colors.blueGrey,
-//     onPressed: () {},
-//   ),
-// ),
