@@ -127,16 +127,16 @@ class _PostCardState extends State<PostCard> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // DefaultTextStyle(
-                  //   style: Theme.of(context)
-                  //       .textTheme
-                  //       .titleSmall!
-                  //       .copyWith(fontWeight: FontWeight.w800,),
-                  //   child: Text(
-                  //     'Your Description',
-                  //     style: Theme.of(context).textTheme.bodyMedium,
-                  //   ),
-                  // ),
+                  DefaultTextStyle(
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(fontWeight: FontWeight.w800),
+                    child: Text(
+                      widget.snap['category'],
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.only(top: 0),
