@@ -13,8 +13,10 @@ class Clothings extends StatefulWidget {
 }
 
 class _ClothingsState extends State<Clothings> {
-
   User? user = FirebaseAuth.instance.currentUser!;
+
+  // var finalList = 
+  // (FirebaseFirestore.instance.collection('now')).removeWhere((item) => item.uid == 'userid'));
 
   @override
   void initState() {
@@ -38,9 +40,18 @@ class _ClothingsState extends State<Clothings> {
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('donations')
-              .where('category', isEqualTo: 'CLOTHING')
-              .where('userId', isNotEqualTo: user!.uid)
-              .snapshots(),
+              .where('category', isEqualTo: "CLOTHING")
+              // .where('userId', isNotEqualTo: user!.uid)
+              .snapshots().where((event) => false),
+          //     .where((event) {
+          //   event.docs.where((element) => false);
+          //   // event.docs.forEach((element) {
+          //   //   if (element.get('userId').toString() == user!.uid) {
+          //   //     event.docs.remove(element);
+          //   //   }
+          //   // });
+          //   return true;
+          // }),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
