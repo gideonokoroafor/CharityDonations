@@ -1,9 +1,15 @@
+// ignore_for_file: unused_import, library_prefixes
+
+import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:charity_donations/users_view/home_page.dart';
+import 'package:charity_donations/utils/my_drop_down_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 // import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:charity_donations/utils/constants.dart' as Constants;
 
 import '../utils/myButtons.dart';
 
@@ -15,13 +21,15 @@ class BuildProfile extends StatefulWidget {
 }
 
 class _BuildProfileState extends State<BuildProfile> {
-  final _addressController = TextEditingController();
+  // final _addressController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _numberController = TextEditingController();
+  final _pronounsController = TextEditingController();
 
   List<String> gender = ['Male', 'Female', 'Other'];
 
   final firestoreInstance = FirebaseFirestore.instance;
+  CharityDonationsModel model = CharityDonationsModel();
 
   // void pickUploadImage() async {
   //   final img = await ImagePicker().pickImage(
@@ -84,6 +92,14 @@ class _BuildProfileState extends State<BuildProfile> {
                       const SizedBox(
                         height: 10,
                       ),
+                      _inputGender(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      _inputPronouns(),
+                      const SizedBox(
+                        height: 10,
+                      ),
                       _inputDescription(),
                       const SizedBox(
                         height: 10,
@@ -132,32 +148,48 @@ class _BuildProfileState extends State<BuildProfile> {
     );
   }
 
-  _inputUsername() {
-    return TextField(
-        controller: _addressController,
-        decoration: textDecoration('Enter address'));
-  }
+  // _inputUsername() {
+  //   return TextField(
+  //       controller: _addressController,
+  //       decoration: textDecoration('Enter address'));
+  // }
 
   _inputPhoneNumber() {
     return TextField(
         controller: _numberController,
-        decoration: textDecoration('Enter mobile number: 444-444-4444'));
+        decoration: textDecoration('Enter mobile number: (444)444-4444'));
   }
 
   _inputDescription() {
     return TextField(
         controller: _descriptionController,
         maxLines: 4,
-        decoration: textDecoration('Write about yourself'));
+        decoration: textDecoration('Tell us about yourself'));
   }
 
-  
+  _inputPronouns() {
+    return TextField(
+        controller: _pronounsController,
+        decoration: textDecoration('Enter your Pronouns (he/him)'));
+  }
+
+  _inputGender() {
+    return MyDropDownMenu(
+      items: Constants.gender,
+      buttonHeight: 56,
+      buttonWidth: 450,
+      dropDownHeight: 200,
+      dropDownWidth: 200,
+      dropdownDirection: DropdownDirection.left,
+      label: 'Select your Gender',
+    );
+  }
 
   _changeProfilePicture() {
     return Center(
       child: TextButton(
         child: const Text(
-          "Change profile picture",
+          'Change profile picture',
         ),
         onPressed: () {},
       ),
