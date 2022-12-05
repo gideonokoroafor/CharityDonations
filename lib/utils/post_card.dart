@@ -2,11 +2,11 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:share_plus/share_plus.dart';
 
 class PostCard extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables
   final snap;
-  // final snapLen;
   const PostCard({
     super.key,
     this.snap,
@@ -20,6 +20,7 @@ class _PostCardState extends State<PostCard> {
   CharityDonationsModel model = CharityDonationsModel();
   int len = 0;
 
+  late String profileimage;
   getlen() {
     // ignore: unused_local_variable
     for (var element in widget.snap['url']) {
@@ -30,6 +31,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   void initState() {
+    profileimage = widget.snap['profilePicture'].toString();
     super.initState();
   }
 
@@ -45,11 +47,8 @@ class _PostCardState extends State<PostCard> {
                 .copyWith(right: 0),
             child: Row(
               children: [
-                const CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(
-                      'https://thumbs.dreamstime.com/b/sunrise-canal-park-duluth-mn-76481949.jpg'),
-                ),
+                CircleAvatar(
+                    radius: 16, backgroundImage: NetworkImage(profileimage)),
                 Expanded(
                     child: Padding(
                   padding: const EdgeInsets.only(left: 8),
@@ -58,6 +57,7 @@ class _PostCardState extends State<PostCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
+                        // widget.snap['profilePicture'].toString(),
                         widget.snap['fullname'],
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -75,7 +75,7 @@ class _PostCardState extends State<PostCard> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 16),
                                     shrinkWrap: true,
-                                    children: ['Delete', 'Bookmarks']
+                                    children: ['Share', 'Bookmarks', 'Message']
                                         .map((e) => InkWell(
                                               onTap: () {},
                                               child: Container(
@@ -96,33 +96,37 @@ class _PostCardState extends State<PostCard> {
           // Image section
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: double.infinity,
-              child: Swiper(
-                itemCount: getlen(),
-                itemBuilder: (context, index) {
-                  return Image.network(
-                    widget.snap['url'][index],
-                    fit: BoxFit.cover,
-                  );
-                },
-                // scrollDirection: Axis.vertical,
-                loop: false,
-                pagination:
-                    const SwiperPagination(alignment: Alignment.bottomCenter),
-              ),
-            ),
+            child: createDonationCard(context),
           ),
 
-          // bookmarks section
-          // Row(
-          //   children: [],
-          // )
+          // bookmarks and message row
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.bookmark,
+                    color: Colors.grey[600],
+                  )),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.message,
+                    color: Colors.grey[600],
+                  )),
+              IconButton(
+                  onPressed: () {
+                    Share.share(widget.snap['url']);
+                  },
+                  icon: Icon(Icons.send, color: Colors.grey[600])),
+            ],
+          ),
 
           // ITEM DESCRIPTION
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+            ),
             child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,10 +136,15 @@ class _PostCardState extends State<PostCard> {
                         .textTheme
                         .titleLarge!
                         .copyWith(fontWeight: FontWeight.w800),
-                    child: Text(
-                      widget.snap['category'],
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
+                    child: Text(widget.snap['category'],
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize:
+                                18) //Theme.of(context).textTheme.bodyLarge,
+                        ),
+                  ),
+                  const SizedBox(
+                    height: 5,
                   ),
                   Container(
                     width: double.infinity,
@@ -146,13 +155,13 @@ class _PostCardState extends State<PostCard> {
                             children: [
                           TextSpan(
                               text: widget.snap['itemName'],
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold)),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16)),
                           const TextSpan(text: '   '),
                           TextSpan(
                               text: widget.snap['description'],
                               style: const TextStyle(
-                                  fontWeight: FontWeight.normal)),
+                                  fontWeight: FontWeight.normal, fontSize: 16)),
                         ])),
                   ),
                   Container(
@@ -170,4 +179,24 @@ class _PostCardState extends State<PostCard> {
       ),
     );
   }
+
+  SizedBox createDonationCard(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.35,
+      width: double.infinity,
+      child: Swiper(
+        itemCount: getlen(),
+        itemBuilder: (context, index) {
+          return Image.network(
+            widget.snap['url'][index],
+            fit: BoxFit.cover,
+          );
+        },
+        // scrollDirection: Axis.vertical,
+        loop: false,
+        pagination: const SwiperPagination(alignment: Alignment.bottomCenter),
+      ),
+    );
+  }
+
 }
