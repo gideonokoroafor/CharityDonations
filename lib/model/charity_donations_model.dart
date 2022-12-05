@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_typing_uninitialized_variables, avoid_print
 
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,12 +26,51 @@ class CharityDonationsModel {
 
   // Add user details to the database and store their userID
   Future dbAddUserDetails(
-      String firstname, String lastName, String email, String docId) async {
+    String firstname,
+    String lastName,
+    String email,
+    String docId,
+    String url,
+    String pronouns,
+    String gender,
+    String number,
+    String occupation,
+    String description,
+  ) async {
     await FirebaseFirestore.instance.collection('users').doc(docId).set({
       'firstname': firstname,
       'lastname': lastName,
       'email': email,
+      'profilePicture': url,
+      'pronouns': pronouns,
+      'gender': gender,
+      'aboutMe': description,
+      'phoneNumber': number,
+      'occupation': occupation,
       'userId': getCurrentUser(),
+    });
+  }
+
+  // Add user profile to the database and store their userID
+  Future dbAddUserProfile(
+      String url,
+      String pronouns,
+      String gender,
+      String number,
+      String occupation,
+      String description,
+      String docId) async {
+    await FirebaseFirestore.instance
+        .collection('usersProfiles')
+        .doc(docId)
+        .set({
+      'profilePicture': url,
+      'pronouns': pronouns,
+      'gender': gender,
+      'userId': getCurrentUser(),
+      'aboutMe': description,
+      'phoneNumber': number,
+      'occupation': occupation
     });
   }
 
@@ -54,6 +93,7 @@ class CharityDonationsModel {
       String category,
       String itemDescription,
       List<String> url,
+      String profilePic,
       String uuid) async {
     await FirebaseFirestore.instance.collection('donations').doc(uuid).set({
       'fullname': fullname,
@@ -61,14 +101,23 @@ class CharityDonationsModel {
       'category': category,
       'description': itemDescription,
       'url': url,
+      'profilePicture': profilePic,
       'userId': docId,
       'datePublished': DateTime.now()
     });
+  }
+
+  Future dbUpdateProfilePic(String url) async {
+    var collection = FirebaseFirestore.instance.collection('users');
+    collection
+        .doc(getCurrentUser())
+        .update({'profilePicture': url})
+        .then((value) => print("Updated"))
+        .catchError((onError) => print('Update failed: $onError'));
   }
 
   // Future dbAddUserProfile(
   //   String pic, String phoneNumber, String aboutMe, String gender, String proffession) async {
   //     await FirebaseFirestore.instance.collection('users').add('data':pic,);
   //   }
-
 }
