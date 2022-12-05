@@ -1,3 +1,4 @@
+import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,7 @@ class Clothings extends StatefulWidget {
 
 class _ClothingsState extends State<Clothings> {
   User? user = FirebaseAuth.instance.currentUser!;
-
-  // var finalList = 
-  // (FirebaseFirestore.instance.collection('now')).removeWhere((item) => item.uid == 'userid'));
+  CharityDonationsModel model = CharityDonationsModel();
 
   @override
   void initState() {
@@ -28,30 +27,26 @@ class _ClothingsState extends State<Clothings> {
     super.dispose();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTasksStreamSnapShots() {
+    return FirebaseFirestore.instance
+        .collection('donations')
+        .where('category', isEqualTo: "CLOTHING")
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final tasks = getAllTasksStreamSnapShots();
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title: const Text('Clothing'),
+          title: const Text('Clothing', style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('donations')
-              .where('category', isEqualTo: "CLOTHING")
-              // .where('userId', isNotEqualTo: user!.uid)
-              .snapshots().where((event) => false),
-          //     .where((event) {
-          //   event.docs.where((element) => false);
-          //   // event.docs.forEach((element) {
-          //   //   if (element.get('userId').toString() == user!.uid) {
-          //   //     event.docs.remove(element);
-          //   //   }
-          //   // });
-          //   return true;
-          // }),
+          // ignore: iterable_contains_unrelated_type
+          stream: getAllTasksStreamSnapShots().skipWhile((element) => element.docs.contains(user!.uid)),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
