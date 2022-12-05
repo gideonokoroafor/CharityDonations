@@ -1,9 +1,12 @@
+// ignore_for_file: iterable_contains_unrelated_type
 
-import 'package:charity_donations/utils/loading.dart';
-import 'package:charity_donations/utils/post_card.dart';
+import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../utils/loading.dart';
+import '../../utils/post_card.dart';
 
 class Books extends StatefulWidget {
   const Books({super.key});
@@ -14,6 +17,7 @@ class Books extends StatefulWidget {
 
 class _BooksState extends State<Books> {
   User? user = FirebaseAuth.instance.currentUser!;
+  CharityDonationsModel model = CharityDonationsModel();
 
   @override
   void initState() {
@@ -25,21 +29,27 @@ class _BooksState extends State<Books> {
     super.dispose();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTasksStreamSnapShots() {
+    return FirebaseFirestore.instance
+        .collection('donations')
+        .where('category', isEqualTo: "BOOKS")
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // final tasks = getAllTasksStreamSnapShots();
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title: const Text('Books'),
+          title: const Text('Books', style: TextStyle(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('donations')
-              .where('category', isEqualTo: 'BOOKS')
-              .where('userId', isNotEqualTo: user!.uid)
-              .snapshots(),
+          stream: getAllTasksStreamSnapShots()
+              .skipWhile((element) => element.docs.contains(user!.uid)),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
