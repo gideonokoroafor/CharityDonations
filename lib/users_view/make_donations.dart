@@ -31,27 +31,18 @@ class _MakeDonationsState extends State<MakeDonations> {
   String _fullname = "";
   String _email = "";
   String _uid = "";
+  String _profilePic = "";
 
   double val = 0;
   var uuid = const Uuid();
   bool _isUploading = false;
   late CollectionReference imgRef;
-  late firebase_storage.Reference ref; // remove
+  late firebase_storage.Reference ref;
   User? user = FirebaseAuth.instance.currentUser!;
 
   CharityDonationsModel model = CharityDonationsModel();
 
   String? selectedValue;
-  // final List<String> items = [
-  //   'CLOTHING',
-  //   'BAGS AND SHOES',
-  //   'KITCHENWARE',
-  //   'FURNITURES',
-  //   'SPORTING GOODS',
-  //   'BOOKS',
-  //   'TOYS',
-  //   'ELECTRONICS'
-  // ];
 
   final List<File> _image = [];
   final picker = ImagePicker();
@@ -60,7 +51,7 @@ class _MakeDonationsState extends State<MakeDonations> {
   void initState() {
     super.initState();
     getData();
-    imgRef = FirebaseFirestore.instance.collection('imageURLs');
+    // imgRef = FirebaseFirestore.instance.collection('imageURLs');
   }
 
   void getData() async {
@@ -72,6 +63,7 @@ class _MakeDonationsState extends State<MakeDonations> {
       _lastname = dbReference.get('lastname');
       _fullname = "$_firstname $_lastname";
       _email = dbReference.get('email');
+      _profilePic = dbReference.get('profilePicture');
     });
   }
 
@@ -80,7 +72,8 @@ class _MakeDonationsState extends State<MakeDonations> {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title: const Text('Make Donations'),
+          title: const Text('Make Donations', style: TextStyle(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
@@ -162,13 +155,8 @@ class _MakeDonationsState extends State<MakeDonations> {
         _image.add(file);
       });
     } catch (error) {
-      const Text('This category is empty');
+      const Text('File empty');
     }
-    // File? file = File(pickedFile!.path);
-    // setState(() {
-    //   _image.add(file);
-    // });
-    // if (file == null) retrieveLostData();
   }
 
   Future uploadFile() async {
@@ -190,7 +178,7 @@ class _MakeDonationsState extends State<MakeDonations> {
       });
     }
     model.dbDonationDetails(_fullname, _nameController.text, _uid,
-        selectedValue!, _descriptionController.text, imageUrlList, v1);
+        selectedValue!, _descriptionController.text, imageUrlList, _profilePic, v1);
   }
 
   _inputItemTitle() {
@@ -264,18 +252,6 @@ class _MakeDonationsState extends State<MakeDonations> {
       filled: true,
     );
   }
-
-  // _categoriesMenu(BuildContext context) {
-  //   return MyDropDownMenu(
-  //       items: Constants.items,
-  //       buttonHeight: 55,
-  //       buttonWidth: 450,
-  //       dropDownHeight: 200,
-  //       dropDownWidth: 200,
-  //       dropdownDirection: DropdownDirection.left,
-  //       label: 'Choose category',
-  //     );
-  // }
 
   //drop down menu for categories
   _categoriesMenu(BuildContext context) {
