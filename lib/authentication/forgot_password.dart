@@ -144,13 +144,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             ),
             onPressed: () {
               // clear previous screens up untill the AuthPage
-              Navigator.pushAndRemoveUntil<dynamic>(
+              Navigator.pushReplacement(
                 context,
-                MaterialPageRoute<dynamic>(
-                  builder: (BuildContext context) => const AuthPage(),
+                PageRouteBuilder(
+                  pageBuilder: (context, animation1, animation2) =>
+                      const AuthPage(),
+                  transitionDuration: Duration.zero,
+                  reverseTransitionDuration: Duration.zero,
                 ),
-                (route) =>
-                    false, //if you want to disable back feature set to false
               );
             },
           ),

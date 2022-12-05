@@ -1,10 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:charity_donations/utils/loading.dart';
 import 'package:charity_donations/utils/myButtons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class OrgSignUp extends StatefulWidget {
@@ -37,9 +37,9 @@ class _OrgSignUpState extends State<OrgSignUp> {
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim())
             .then((value) {
-          model.dbAddOrgDetails(_organisationnameController.text.trim(),
-              _emailController.text.trim(), value.user!.uid
-              );
+          // model.dbAddOrgDetails(_organisationnameController.text.trim(),
+          //     _emailController.text.trim(), value.user!.uid
+          //     );
         });
       }
     } on FirebaseAuthException catch (e) {

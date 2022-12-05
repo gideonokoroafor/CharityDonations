@@ -43,6 +43,15 @@ dependencies:
   google_nav_bar: ^5.0.6
   persistent_bottom_nav_bar: ^5.0.2
   image_picker: ^0.8.6
+  transparent_image: ^2.0.0
+  firebase_storage: ^11.0.6
+  path: ^1.8.2
+  dropdown_button2: ^1.9.0
+  uuid: ^3.0.7
+  intl: ^0.17.0
+  card_swiper: ^2.0.4
+  cached_network_image: ^3.2.3
+  share_plus: ^6.3.0
   # flutter_profile_picture: ^2.0.0
 
 dev_dependencies:
@@ -78,6 +87,7 @@ flutter:
     - assets/amal_logo2.png
     - assets/amal_logo3.png
     - assets/amal_bluegrey_logo1.png
+    - assets/user.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
