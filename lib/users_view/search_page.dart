@@ -1,5 +1,11 @@
 // ignore_for_file: library_prefixes
 
+import 'package:charity_donations/users_view/category_pages.dart/books.dart';
+import 'package:charity_donations/users_view/category_pages.dart/electronics.dart';
+import 'package:charity_donations/users_view/category_pages.dart/furnitures.dart';
+import 'package:charity_donations/users_view/category_pages.dart/kitchen_appliances.dart';
+import 'package:charity_donations/users_view/category_pages.dart/sporting_goods.dart';
+import 'package:charity_donations/users_view/category_pages.dart/toys.dart';
 import 'package:charity_donations/utils/constants.dart' as Constants;
 import 'package:flutter/material.dart';
 
@@ -31,7 +37,8 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('Search'),
+        title: const Text('Search', style: TextStyle(
+                fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
       ),
@@ -102,7 +109,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            const Clothings(),
+                            const KitchenAppliances(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
@@ -117,7 +124,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            const BagsAndShoes(),
+                            const Furnitures(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
@@ -142,7 +149,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            const Clothings(),
+                            const SportingGoods(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
@@ -157,7 +164,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            const BagsAndShoes(),
+                            const Toys(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
@@ -182,7 +189,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            const Clothings(),
+                            const Books(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
@@ -197,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            const BagsAndShoes(),
+                            const Electronics(),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),
