@@ -1,5 +1,4 @@
 import 'package:charity_donations/authentication/forgot_password.dart';
-import 'package:charity_donations/organization_view/OrgSignup.dart';
 import 'package:charity_donations/utils/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +8,7 @@ import '../utils/mybuttons.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback showSignUpPage;
-  const LoginPage({Key? key, required this.showSignUpPage}) : super(key: key);
+  const LoginPage({Key? key, required this.showSignUpPage,}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -103,10 +102,10 @@ class _LoginPageState extends State<LoginPage> {
                       height: 15,
                     ),
                     _signUpButton(context), // signup button
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    _signUpOrgButton(context), // organization
+                    // const SizedBox(
+                    //   height: 15,
+                    // ),
+                    // _signUpOrgButton(context), // organization
                     _forgotPassword(),
                   ]),
             ),
@@ -181,13 +180,19 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
       GestureDetector(
-        onTap: widget.showSignUpPage,
-        // () {
-        //   Navigator.of(context)
-        //       .push(MaterialPageRoute(builder: (BuildContext context) {
-        //     return const SignUpPage();
-        //   }));
+        onTap: 
+        // (){
+        //   Navigator.pushReplacement(
+        //         context,
+        //         PageRouteBuilder(
+        //           pageBuilder: (context, animation1, animation2) =>
+        //               const SignUpPage(),
+        //           transitionDuration: Duration.zero,
+        //           reverseTransitionDuration: Duration.zero,
+        //         ),
+        //       );
         // },
+        widget.showSignUpPage,
         child: const Text(
           'Register now',
           style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
@@ -197,26 +202,26 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   // sign up as an organiztion
-  _signUpOrgButton(context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      const Text(
-        'Signing up as an organization? ',
-        style: TextStyle(fontWeight: FontWeight.bold),
-      ),
-      GestureDetector(
-        onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return const OrgSignUp();
-          }));
-        },
-        child: const Text(
-          'Register now',
-          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
-        ),
-      ),
-    ]);
-  }
+  // _signUpOrgButton(context) {
+  //   return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+  //     const Text(
+  //       'Signing up as an organization? ',
+  //       style: TextStyle(fontWeight: FontWeight.bold),
+  //     ),
+  //     GestureDetector(
+  //       onTap: () {
+  //         Navigator.of(context)
+  //             .push(MaterialPageRoute(builder: (BuildContext context) {
+  //           return const OrgSignUp();
+  //         }));
+  //       },
+  //       child: const Text(
+  //         'Register now',
+  //         style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+  //       ),
+  //     ),
+  //   ]);
+  // }
 
   _backgroundImage() {
     Size size = MediaQuery.of(context).size;
@@ -248,10 +253,15 @@ class _LoginPageState extends State<LoginPage> {
           "Forgot Password?",
         ),
         onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (BuildContext context) {
-            return const ForgotPasswordPage();
-          }));
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) =>
+                  const ForgotPasswordPage(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero,
+            ),
+          );
         },
       ),
     );
