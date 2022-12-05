@@ -37,9 +37,9 @@ class _OrgSignUpState extends State<OrgSignUp> {
                 email: _emailController.text.trim(),
                 password: _passwordController.text.trim())
             .then((value) {
-          model.dbAddOrgDetails(_organisationnameController.text.trim(),
-              _emailController.text.trim(), value.user!.uid
-              );
+          // model.dbAddOrgDetails(_organisationnameController.text.trim(),
+          //     _emailController.text.trim(), value.user!.uid
+          //     );
         });
       }
     } on FirebaseAuthException catch (e) {
