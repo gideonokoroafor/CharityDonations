@@ -1,8 +1,12 @@
-import 'package:charity_donations/utils/loading.dart';
-import 'package:charity_donations/utils/post_card.dart';
+// ignore_for_file: iterable_contains_unrelated_type
+
+import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../../utils/loading.dart';
+import '../../utils/post_card.dart';
 
 class Electronics extends StatefulWidget {
   const Electronics({super.key});
@@ -13,6 +17,7 @@ class Electronics extends StatefulWidget {
 
 class _ElectronicsState extends State<Electronics> {
   User? user = FirebaseAuth.instance.currentUser!;
+  CharityDonationsModel model = CharityDonationsModel();
 
   @override
   void initState() {
@@ -24,21 +29,26 @@ class _ElectronicsState extends State<Electronics> {
     super.dispose();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTasksStreamSnapShots() {
+    return FirebaseFirestore.instance
+        .collection('donations')
+        .where('category', isEqualTo: "ELECTRONICS")
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title: const Text('Electronics'),
+          title: const Text('Electronics', style: TextStyle(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('donations')
-              .where('category', isEqualTo: 'ELECTRONICS')
-              .where('userId', isNotEqualTo: user!.uid)
-              .snapshots(),
+          stream: getAllTasksStreamSnapShots()
+              .skipWhile((element) => element.docs.contains(user!.uid)),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
