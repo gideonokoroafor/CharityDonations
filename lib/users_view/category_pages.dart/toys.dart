@@ -1,20 +1,22 @@
-
-
-import 'package:charity_donations/utils/loading.dart';
-import 'package:charity_donations/utils/post_card.dart';
+// ignore_for_file: iterable_contains_unrelated_type
+import 'package:charity_donations/model/charity_donations_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+import '../../utils/loading.dart';
+import '../../utils/post_card.dart';
+
+class Toys extends StatefulWidget {
+  const Toys({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<Toys> createState() => _ToysState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class _ToysState extends State<Toys> {
   User? user = FirebaseAuth.instance.currentUser!;
+  CharityDonationsModel model = CharityDonationsModel();
 
   @override
   void initState() {
@@ -26,21 +28,26 @@ class _MyWidgetState extends State<MyWidget> {
     super.dispose();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllTasksStreamSnapShots() {
+    return FirebaseFirestore.instance
+        .collection('donations')
+        .where('category', isEqualTo: "TOYS")
+        .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title: const Text('Toys'),
+          title: const Text('Toys', style: TextStyle(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
         body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('donations')
-              .where('category', isEqualTo: 'TOYS')
-              .where('userId', isNotEqualTo: user!.uid)
-              .snapshots(),
+          stream: getAllTasksStreamSnapShots()
+              .skipWhile((element) => element.docs.contains(user!.uid)),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
