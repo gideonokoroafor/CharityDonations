@@ -13,7 +13,8 @@ class _ChatState extends State<Chat> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('Chat'),
+        title: const Text('Chat', style: TextStyle(
+                fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
       ),
