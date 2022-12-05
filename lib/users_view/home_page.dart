@@ -20,13 +20,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          title: const Text('Home'),
+          title: const Text('Amal', style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold)),
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
         ),
         body: StreamBuilder(
           stream:
-              FirebaseFirestore.instance.collection('donations').where('userId', isNotEqualTo: user!.uid).snapshots(),
+              FirebaseFirestore.instance.collection('donations')
+              .where('userId', isNotEqualTo: user!.uid)
+              .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
